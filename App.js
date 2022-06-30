@@ -1,65 +1,28 @@
-import React from 'react';
+import 'react-native-gesture-handler';
+import { createStackNavigator } from '@react-navigation/stack';
+import { NavigationContainer } from '@react-navigation/native';
+import HomeScreen from './screens/HomeScreen';
 import { Image, StyleSheet, Text, TouchableOpacity, Platform, View } from 'react-native';
-import * as ImagePicker from 'expo-image-picker';
-import uploadToAnonymousFilesAsync from "anonymous-files";
-import * as Sharing from 'expo-sharing';
-import iconImage from './assets/icon_image.png';
+import React from 'react';
+
+const Stack = createStackNavigator();
 
 export default function App() {
-    let [selectedImage, setSelectedImage] = React.useState(null);
-
-    let openImagePickerAsync = async () => {
-        let permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
-
-        if (permissionResult.granted === false) {
-            alert('Permission to access camera roll is required!');
-            return;
-        }
-
-        let pickerResult = await ImagePicker.launchImageLibraryAsync();
-        if (pickerResult.cancelled === true) {
-            return;
-        }
-
-        if (Platform.OS === 'web') {
-            let remoteUri = await uploadToAnonymousFilesAsync(pickerResult.uri);
-            setSelectedImage({ localUri: pickerResult.uri, remoteUri });
-        } else {
-            setSelectedImage({ localUri: pickerResult.uri, remoteUri: null });
-        }
-    };
-
-    let openShareDialogAsync = async () => {
-        if (Platform.OS === 'web') {
-            alert(`Uh oh, sharing isn't available on your platform`);
-            return;
-        }
-
-        await Sharing.shareAsync(selectedImage.localUri);
-    };
-
-    if (selectedImage !== null) {
-        return (
-            <View style={styles.container}>
-                <Image source={{ uri: selectedImage.localUri }} style={styles.thumbnail} />
-                <TouchableOpacity onPress={openShareDialogAsync} style={styles.button}>
-                    <Text style={styles.buttonText}>Share this photo</Text>
-                </TouchableOpacity>
-            </View>
-        );
-    }
-
     return (
-        <View style={styles.container}>
-            <Text style={styles.instructions}>
-                To share a photo from your phone with a friend, just press the button below!
-            </Text>
-
-            <TouchableOpacity onPress={openImagePickerAsync} style={styles.button}>
-                <Image source={iconImage} style={styles.logo} />
-                <Text style={styles.buttonText}>Pick a photo</Text>
-            </TouchableOpacity>
-        </View>
+        <NavigationContainer>
+            <Stack.Navigator initialRouteName="Home">
+                <Stack.Screen
+                    name="Home"
+                    component={HomeScreen}
+                    options={{
+                        headerStyle: {
+                            backgroundColor: '#228CDB'
+                        },
+                        headerTintColor: '#fff'
+                    }}
+                />
+            </Stack.Navigator>
+        </NavigationContainer>
     );
 }
 
