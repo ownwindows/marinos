@@ -1,25 +1,39 @@
 import 'react-native-gesture-handler';
-import { createStackNavigator } from '@react-navigation/stack';
-import { NavigationContainer } from '@react-navigation/native';
+import {createStackNavigator} from '@react-navigation/stack';
+import {NavigationContainer} from '@react-navigation/native';
 import HomeScreen from './screens/HomeScreen';
-import { Image, StyleSheet, Text, TouchableOpacity, Platform, View } from 'react-native';
+import {Image, StyleSheet, Text, TouchableOpacity, Platform, View} from 'react-native';
 import React from 'react';
+import ImageScreen from "./screens/ImageScreen";
+import {Icon} from "react-native-elements";
 
 const Stack = createStackNavigator();
 
 export default function App() {
     return (
         <NavigationContainer>
-            <Stack.Navigator initialRouteName="Home">
+            <Stack.Navigator
+                screenOptions={styles.header}
+                initialRouteName="Home">
                 <Stack.Screen
-                    name="Home"
+                    name="Finalist"
                     component={HomeScreen}
-                    options={{
-                        headerStyle: {
-                            backgroundColor: '#228CDB'
-                        },
-                        headerTintColor: '#fff'
-                    }}
+                    options={({navigation}) => ({
+                        headerRight: () => (
+                            <Icon
+                                name="plus"
+                                type="feather"
+                                color="orange"
+                                style={styles.headerIcon}
+                                onPress={() => navigation.navigate('Image')}
+                            />
+                        )
+                    })}
+                />
+                <Stack.Screen
+                    name="Image"
+                    component={ImageScreen}
+                    options={styles.header}
                 />
             </Stack.Navigator>
         </NavigationContainer>
@@ -27,35 +41,21 @@ export default function App() {
 }
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: '#fff',
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-    logo: {
-        width: 100,
-        height: 100,
-        marginBottom: 20,
-    },
-    instructions: {
-        color: '#888',
-        fontSize: 18,
-        marginHorizontal: 15,
-        marginBottom: 10,
-    },
-    button: {
-        padding: 20,
-        borderRadius: 5,
+    header: {
+        headerStyle: {
+            backgroundColor: 'black',
 
+        },
+        headerTintColor: '#fff',
+        headerTitleStyle: {
+            fontFamily: 'Georgia',
+            fontSize: 25,
+            letterSpacing: 1,
+        }
     },
-    buttonText: {
-        fontSize: 20,
-        color: 'gray',
-    },
-    thumbnail: {
-        width: 300,
-        height: 300,
-        resizeMode: 'contain',
-    },
+    headerIcon: {
+        marginRight: 10,
+        color: 'white',
+
+    }
 });
