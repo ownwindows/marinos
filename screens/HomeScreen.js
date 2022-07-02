@@ -4,7 +4,9 @@ import {StyleSheet, Text, View} from 'react-native';
 export default function NewScreen () {
     return (
         <View style={styles.container}>
-            <Text style={styles.body}>This the <Text style={styles.body.important}>home Screen</Text></Text>
+            <Text
+                style={styles.body}
+            >This the <Text style={styles.importantText}>home Screen</Text></Text>
         </View>
     )
 }
@@ -19,9 +21,11 @@ const styles = StyleSheet.create({
     },
     body: {
         textAlign: 'center',
-        important:{
-            fontWeight: 'bold'
-        }
+
+    },
+    importantText:{
+        fontWeight: 'bold',
+
     },
 
 });
